@@ -25,16 +25,21 @@ public class ProductBasket {
 
     private int getTotalCost(boolean withPrint) {
         int total = 0;
+        int specialTotal = 0;
         for (Product product : basket) {
             if (product != null) {
                 total += product.getPrice();
+                if (product.isSpecial()) {
+                    specialTotal++;
+                }
                 if (withPrint) {
-                    System.out.println(product.getName() + ": " + product.getPrice());
+                    System.out.println(product);
                 }
             }
         }
         if (withPrint) {
-            System.out.println(total == 0 ? "В корзине пусто!" : "Итого: " + total);
+            System.out.println(total == 0 ? "В корзине пусто!" : "Итого: %d".formatted(total));
+            System.out.printf("Специальных товаров: %d%n", specialTotal);
         }
         return total;
     }
