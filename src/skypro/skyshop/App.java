@@ -6,6 +6,8 @@ import skypro.skyshop.product.FixPriceProduct;
 import skypro.skyshop.product.Product;
 import skypro.skyshop.product.SimpleProduct;
 
+import java.util.List;
+
 public class App {
     public static void main(String[] args) {
         final String delimiter = "***************************************";
@@ -23,10 +25,6 @@ public class App {
         basket2.addProduct(new DiscountedProduct("Молоток", 270, 25));
         basket2.addProduct(new FixPriceProduct("Картофель"));
         basket2.addProduct(new SimpleProduct("Ряженка", 80));
-        System.out.println(delimiter);
-
-        System.out.println("Задача 2: Добавление продукта в заполненную корзину, в которой нет свободного места");
-        basket1.addProduct(new SimpleProduct("Тыква", 300));
         System.out.println(delimiter);
 
         System.out.println("Задача 3: Печать содержимого корзины с несколькими товарами");
@@ -51,7 +49,7 @@ public class App {
         System.out.println(delimiter);
 
         System.out.println("Задача 7: Очистка корзины");
-        basket2.clean();
+        basket2.clear();
         System.out.println("Корзина 2 очищена");
         System.out.println(delimiter);
 
@@ -66,6 +64,23 @@ public class App {
 
         System.out.println("Задача 10: Поиск товара по имени в пустой корзине");
         System.out.println("Товар есть в корзине 2: " + basket2.isContainProduct("Лук"));
+        System.out.println(delimiter);
+
+        System.out.println("Задача 11: Метод удаления продукта по имени из корзины");
+        System.out.println("Удаляем продукт лук");
+        List<Product> deleted = basket1.deleteProduct("лук");
+        System.out.println("Список удаленных продуктов: " + deleted);
+        System.out.println();
+        System.out.println("Список продуктов в корзине");
+        basket1.printContent();
+        System.out.println();
+        System.out.println("Удаляем несуществующий продукт: фвыаывап");
+        deleted = basket1.deleteProduct("фвыаывап");
+        System.out.println();
+        System.out.println("Список удаленных продуктов: " + deleted);
+        System.out.println();
+        System.out.println("Список продуктов в корзине");
+        basket1.printContent();
         System.out.println(delimiter);
     }
 }
