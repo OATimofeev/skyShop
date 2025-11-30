@@ -1,6 +1,6 @@
-package skypro.skyshop.basket;
+package skypro.skyshop.entity.basket;
 
-import skypro.skyshop.product.Product;
+import skypro.skyshop.entity.product.Product;
 
 public class ProductBasket {
     private Product[] basket = new Product[5];

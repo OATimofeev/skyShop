@@ -1,4 +1,6 @@
-package skypro.skyshop.search;
+package skypro.skyshop.util.search;
+
+import skypro.skyshop.exception.BestResultNotFoundException;
 
 public class SearchEngine {
 
@@ -24,6 +26,25 @@ public class SearchEngine {
             }
         }
         return founded;
+    }
+
+    public Searchable searchBest(String searchString) throws BestResultNotFoundException {
+        Searchable current = null;
+        int maxCurrencies = 0;
+        int currencies;
+
+        for (Searchable searchable : searchables) {
+            String operatedString = searchable.searchTerm().toLowerCase().replace(searchString.toLowerCase(), "");
+            currencies = (searchable.searchTerm().length() - operatedString.length()) / searchString.length();
+            if (currencies > maxCurrencies) {
+                current = searchable;
+                maxCurrencies = currencies;
+            }
+        }
+        if (current == null) {
+            throw new BestResultNotFoundException("Не найден ни один подходящий элемент");
+        }
+        return current;
     }
 
     public void add(Searchable searchable) {
