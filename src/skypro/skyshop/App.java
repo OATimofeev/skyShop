@@ -4,6 +4,7 @@ import skypro.skyshop.entity.article.Article;
 import skypro.skyshop.entity.basket.ProductBasket;
 import skypro.skyshop.entity.product.DiscountedProduct;
 import skypro.skyshop.entity.product.FixPriceProduct;
+import skypro.skyshop.entity.product.Product;
 import skypro.skyshop.entity.product.SimpleProduct;
 import skypro.skyshop.exception.BestResultNotFoundException;
 import skypro.skyshop.util.search.SearchEngine;
@@ -89,15 +90,16 @@ public class App {
         searchEngine.add(new Article("Выращивание вшей на бровях", "Тут есть текст????"));
         searchEngine.add(new Article("Промывка носа пескоструем на лошадях", "Не буду комментировать"));
 
-        System.out.println("Поиск фиксированного товара: " + Arrays.toString(searchEngine.search("Картофель")));
-        System.out.println("Поиск обычного товара: " + Arrays.toString(searchEngine.search("Банан")));
-        System.out.println("Поиск разных товаров: " + Arrays.toString(searchEngine.search("Моло")));
-        System.out.println("Поиск разных товаров и статьи: " + Arrays.toString(searchEngine.search("ло")));
-        System.out.println("Поиск статьи по тексту: " + Arrays.toString(searchEngine.search("Не буду комментировать")));
-        System.out.println("Поиск несуществующего значения: " + Arrays.toString(searchEngine.search("ТАКОГО ТЕКСТА НЕТ")));
-        System.out.println("Поиск пустой строки: " + Arrays.toString(searchEngine.search("")));
-        System.out.println("Поиск null-строки: " + Arrays.toString(searchEngine.search(null)));
+        System.out.println("Поиск фиксированного товара: " + searchEngine.search("Картофель"));
+        System.out.println("Поиск обычного товара: " + searchEngine.search("Банан"));
+        System.out.println("Поиск разных товаров: " + searchEngine.search("Моло"));
+        System.out.println("Поиск разных товаров и статьи: " + searchEngine.search("ло"));
+        System.out.println("Поиск статьи по тексту: " + searchEngine.search("Не буду комментировать"));
+        System.out.println("Поиск несуществующего значения: " + searchEngine.search("ТАКОГО ТЕКСТА НЕТ"));
+        System.out.println("Поиск пустой строки: " + searchEngine.search(""));
+        System.out.println("Поиск null-строки: " + searchEngine.search(null));
         System.out.println(delimiter);
+
         System.out.println("Исключения в Java");
         System.out.println(delimiter);
 
@@ -164,24 +166,32 @@ public class App {
         } catch (BestResultNotFoundException e) {
             System.out.println("Поймали исключение: " + e.getMessage());
         }
-
         System.out.println(delimiter);
 
-        System.out.println("Задача 11: Метод удаления продукта по имени из корзины");
+        System.out.println("Java Collections Framework: List");
+        System.out.println(delimiter);
+
+        System.out.println(demo);
+        System.out.println("Конструкторы");
+
+        System.out.println("Метод удаления продукта по имени из корзины");
         System.out.println("Удаляем продукт лук");
-        List<Product> deleted = basket1.deleteProduct("лук");
-        System.out.println("Список удаленных продуктов: " + deleted);
+        System.out.println("Список удаленных продуктов: " + basket1.deleteProduct("лук"));
         System.out.println();
         System.out.println("Список продуктов в корзине");
         basket1.printContent();
         System.out.println();
         System.out.println("Удаляем несуществующий продукт: фвыаывап");
-        deleted = basket1.deleteProduct("фвыаывап");
-        System.out.println();
-        System.out.println("Список удаленных продуктов: " + deleted);
+        System.out.println("Список удаленных продуктов: " + basket1.deleteProduct("фвыаывап"));
         System.out.println();
         System.out.println("Список продуктов в корзине");
         basket1.printContent();
+
+        System.out.println("Поиск по списку");
+
+        System.out.println("Поиск обычного товара: " + searchEngine.search("Арбуз"));
+        System.out.println("Поиск несуществующего товара: " + searchEngine.search("Пусто"));
+        System.out.println("Поиск разных товаров и статьи: " + searchEngine.search("ло"));
         System.out.println(delimiter);
     }
 }
