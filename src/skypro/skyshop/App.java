@@ -1,18 +1,19 @@
 package skypro.skyshop;
 
-import skypro.skyshop.article.Article;
-import skypro.skyshop.basket.ProductBasket;
-import skypro.skyshop.product.DiscountedProduct;
-import skypro.skyshop.product.FixPriceProduct;
-import skypro.skyshop.product.Product;
-import skypro.skyshop.product.SimpleProduct;
-import skypro.skyshop.search.SearchEngine;
+import skypro.skyshop.entity.article.Article;
+import skypro.skyshop.entity.basket.ProductBasket;
+import skypro.skyshop.entity.product.DiscountedProduct;
+import skypro.skyshop.entity.product.FixPriceProduct;
+import skypro.skyshop.entity.product.SimpleProduct;
+import skypro.skyshop.exception.BestResultNotFoundException;
+import skypro.skyshop.util.search.SearchEngine;
 
 import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
         final String delimiter = "***************************************";
+        final String demo = "Демонстрация";
 
         ProductBasket basket1 = new ProductBasket();
         ProductBasket basket2 = new ProductBasket();
@@ -75,7 +76,7 @@ public class App {
         System.out.println("ООП: полиморфизм, интерфейсы");
         System.out.println(delimiter);
 
-        System.out.println("Демонстрация");
+        System.out.println(demo);
         SearchEngine searchEngine = new SearchEngine(10);
 
         searchEngine.add(new SimpleProduct("Банан", 50));
@@ -98,6 +99,74 @@ public class App {
         System.out.println("Поиск несуществующего значения: " + Arrays.toString(searchEngine.search("ТАКОГО ТЕКСТА НЕТ")));
         System.out.println("Поиск пустой строки: " + Arrays.toString(searchEngine.search("")));
         System.out.println("Поиск null-строки: " + Arrays.toString(searchEngine.search(null)));
+        System.out.println(delimiter);
+        System.out.println("Исключения в Java");
+        System.out.println(delimiter);
+
+        System.out.println(demo);
+        System.out.println("Конструкторы");
+        try {
+            System.out.println("Имя из пробелов");
+            new FixPriceProduct("  ");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Имя == null");
+            new DiscountedProduct(null, 80, 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Имя пустое");
+            new SimpleProduct("", 80);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Простой продукт, цена == 0");
+            new SimpleProduct("Тестик", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Простой продукт, цена < 0");
+            new SimpleProduct("Тестик", -1);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Скидочный продукт, цена < 0");
+            new SimpleProduct("Тестик", -1);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Скидочный продукт, цена > 100");
+            new SimpleProduct("Тестик", 101);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+
+        System.out.println();
+        System.out.println("Поиск");
+
+        try {
+            System.out.print("Существующий объект ");
+            searchEngine.searchBest("АН");
+            System.out.println("найден");
+            System.out.println();
+        } catch (BestResultNotFoundException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+
+        try {
+            System.out.println("Объекта нет");
+            searchEngine.searchBest("дядя");
+        } catch (BestResultNotFoundException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+
         System.out.println(delimiter);
     }
 }
