@@ -1,4 +1,4 @@
-package skypro.skyshop.product;
+package skypro.skyshop.entity.product;
 
 public class FixPriceProduct extends Product {
     private static final int price = 30;

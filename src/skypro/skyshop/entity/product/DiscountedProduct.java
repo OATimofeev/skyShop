@@ -1,4 +1,4 @@
-package skypro.skyshop.product;
+package skypro.skyshop.entity.product;
 
 public class DiscountedProduct extends Product {
     private int price;
@@ -6,6 +6,7 @@ public class DiscountedProduct extends Product {
 
     public DiscountedProduct(String name, int price, int discount) {
         super(name);
+        checkPriceAndDiscount(price, discount);
         this.price = price;
         this.discount = discount;
     }
@@ -23,5 +24,14 @@ public class DiscountedProduct extends Product {
     @Override
     public String toString() {
         return "%s: %d (%d%%)".formatted(name, price, discount);
+    }
+
+    private void checkPriceAndDiscount(int price, int discount) throws IllegalArgumentException {
+        if (price <= 0) {
+            throw new IllegalArgumentException("Цена должна быть > 0");
+        }
+        if (discount < 0 || discount > 100) {
+            throw new IllegalArgumentException("Скидка должна быть в диапазоне 0-100");
+        }
     }
 }

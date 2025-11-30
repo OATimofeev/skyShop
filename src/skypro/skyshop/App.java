@@ -1,16 +1,21 @@
 package skypro.skyshop;
 
-import skypro.skyshop.basket.ProductBasket;
-import skypro.skyshop.product.DiscountedProduct;
-import skypro.skyshop.product.FixPriceProduct;
-import skypro.skyshop.product.Product;
-import skypro.skyshop.product.SimpleProduct;
+import skypro.skyshop.entity.article.Article;
+import skypro.skyshop.entity.basket.ProductBasket;
+import skypro.skyshop.entity.product.DiscountedProduct;
+import skypro.skyshop.entity.product.FixPriceProduct;
+import skypro.skyshop.entity.product.SimpleProduct;
+import skypro.skyshop.exception.BestResultNotFoundException;
+import skypro.skyshop.util.search.SearchEngine;
+
+import java.util.Arrays;
 
 import java.util.List;
 
 public class App {
     public static void main(String[] args) {
         final String delimiter = "***************************************";
+        final String demo = "Демонстрация";
 
         ProductBasket basket1 = new ProductBasket();
         ProductBasket basket2 = new ProductBasket();
@@ -64,6 +69,102 @@ public class App {
 
         System.out.println("Задача 10: Поиск товара по имени в пустой корзине");
         System.out.println("Товар есть в корзине 2: " + basket2.isContainProduct("Лук"));
+        System.out.println(delimiter);
+
+        System.out.println("ООП: полиморфизм, интерфейсы");
+        System.out.println(delimiter);
+
+        System.out.println(demo);
+        SearchEngine searchEngine = new SearchEngine(10);
+
+        searchEngine.add(new SimpleProduct("Банан", 50));
+        searchEngine.add(new FixPriceProduct("Яблоко"));
+        searchEngine.add(new DiscountedProduct("Арбуз", 350, 10));
+        searchEngine.add(new SimpleProduct("Лук", 10));
+        searchEngine.add(new DiscountedProduct("Молоко", 100, 5));
+        searchEngine.add(new DiscountedProduct("Молоток", 270, 25));
+        searchEngine.add(new FixPriceProduct("Картофель"));
+        searchEngine.add(new SimpleProduct("Ряженка", 80));
+
+        searchEngine.add(new Article("Выращивание вшей на бровях", "Тут есть текст????"));
+        searchEngine.add(new Article("Промывка носа пескоструем на лошадях", "Не буду комментировать"));
+
+        System.out.println("Поиск фиксированного товара: " + Arrays.toString(searchEngine.search("Картофель")));
+        System.out.println("Поиск обычного товара: " + Arrays.toString(searchEngine.search("Банан")));
+        System.out.println("Поиск разных товаров: " + Arrays.toString(searchEngine.search("Моло")));
+        System.out.println("Поиск разных товаров и статьи: " + Arrays.toString(searchEngine.search("ло")));
+        System.out.println("Поиск статьи по тексту: " + Arrays.toString(searchEngine.search("Не буду комментировать")));
+        System.out.println("Поиск несуществующего значения: " + Arrays.toString(searchEngine.search("ТАКОГО ТЕКСТА НЕТ")));
+        System.out.println("Поиск пустой строки: " + Arrays.toString(searchEngine.search("")));
+        System.out.println("Поиск null-строки: " + Arrays.toString(searchEngine.search(null)));
+        System.out.println(delimiter);
+        System.out.println("Исключения в Java");
+        System.out.println(delimiter);
+
+        System.out.println(demo);
+        System.out.println("Конструкторы");
+        try {
+            System.out.println("Имя из пробелов");
+            new FixPriceProduct("  ");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Имя == null");
+            new DiscountedProduct(null, 80, 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Имя пустое");
+            new SimpleProduct("", 80);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Простой продукт, цена == 0");
+            new SimpleProduct("Тестик", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Простой продукт, цена < 0");
+            new SimpleProduct("Тестик", -1);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Скидочный продукт, цена < 0");
+            new SimpleProduct("Тестик", -1);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+        try {
+            System.out.println("Скидочный продукт, цена > 100");
+            new SimpleProduct("Тестик", 101);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+
+        System.out.println();
+        System.out.println("Поиск");
+
+        try {
+            System.out.print("Существующий объект ");
+            searchEngine.searchBest("АН");
+            System.out.println("найден");
+            System.out.println();
+        } catch (BestResultNotFoundException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+
+        try {
+            System.out.println("Объекта нет");
+            searchEngine.searchBest("дядя");
+        } catch (BestResultNotFoundException e) {
+            System.out.println("Поймали исключение: " + e.getMessage());
+        }
+
         System.out.println(delimiter);
 
         System.out.println("Задача 11: Метод удаления продукта по имени из корзины");

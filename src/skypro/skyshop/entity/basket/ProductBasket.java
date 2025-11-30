@@ -1,6 +1,6 @@
-package skypro.skyshop.basket;
+package skypro.skyshop.entity.basket;
 
-import skypro.skyshop.product.Product;
+import skypro.skyshop.entity.product.Product;
 
 import java.util.ArrayList;
 import java.util.Iterator;
