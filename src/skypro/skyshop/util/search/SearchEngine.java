@@ -2,27 +2,27 @@ package skypro.skyshop.util.search;
 
 import skypro.skyshop.exception.BestResultNotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SearchEngine {
 
-    private Searchable[] searchables;
+    private List<Searchable> searchables;
 
     public SearchEngine(int num) {
-        searchables = new Searchable[num];
+        searchables = new ArrayList<>(); // смысла в целом нет
+        System.out.println();
     }
 
-    public Searchable[] search(String searchString) {
-        Searchable[] founded = new Searchable[5];
+    public List<Searchable> search(String searchString) {
+        List<Searchable> founded = new ArrayList<>();
         if (searchString == null || searchString.isEmpty()) {
             return founded;
         }
-        int counter = 0;
 
         for (Searchable searchable : searchables) {
             if (searchable != null && searchable.searchTerm().contains(searchString)) {
-                founded[counter++] = searchable;
-            }
-            if (counter == 5) {
-                break;
+                founded.add(searchable);
             }
         }
         return founded;
@@ -48,11 +48,6 @@ public class SearchEngine {
     }
 
     public void add(Searchable searchable) {
-        for (int i = 0; i < searchables.length; i++) {
-            if (searchables[i] == null) {
-                searchables[i] = searchable;
-                return;
-            }
-        }
+        searchables.add(searchable);
     }
 }
