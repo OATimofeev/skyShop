@@ -76,7 +76,7 @@ public class App {
         System.out.println(delimiter);
 
         System.out.println(demo);
-        SearchEngine searchEngine = new SearchEngine(10);
+        SearchEngine searchEngine = new SearchEngine();
 
         searchEngine.add(new SimpleProduct("Банан", 50));
         searchEngine.add(new FixPriceProduct("Яблоко"));
