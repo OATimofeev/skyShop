@@ -4,25 +4,26 @@ import skypro.skyshop.exception.BestResultNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class SearchEngine {
 
     private List<Searchable> searchables;
 
-    public SearchEngine(int num) {
-        searchables = new ArrayList<>(); // смысла в целом нет
-        System.out.println();
+    public SearchEngine() {
+        searchables = new ArrayList<>();
     }
 
-    public List<Searchable> search(String searchString) {
-        List<Searchable> founded = new ArrayList<>();
+    public Map<String, Searchable> search(String searchString) {
+        Map<String, Searchable> founded = new TreeMap<>();
+
         if (searchString == null || searchString.isEmpty()) {
             return founded;
         }
-
         for (Searchable searchable : searchables) {
             if (searchable != null && searchable.searchTerm().contains(searchString)) {
-                founded.add(searchable);
+                founded.put(searchable.searchTerm(), searchable);
             }
         }
         return founded;

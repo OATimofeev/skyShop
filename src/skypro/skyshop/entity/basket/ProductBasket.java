@@ -2,15 +2,17 @@ package skypro.skyshop.entity.basket;
 
 import skypro.skyshop.entity.product.Product;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ProductBasket {
-    private List<Product> basket = new ArrayList<>();
+    private Map<String, List<Product>> basket = new HashMap<>();
 
     public void addProduct(Product product) {
-        basket.add(product);
+        if (basket.containsKey(product.getName())) {
+            basket.get(product.getName()).add(product);
+        } else {
+            basket.put(product.getName(), new ArrayList<>(List.of(product)));
+        }
     }
 
     public int getTotalCost() {
@@ -24,14 +26,16 @@ public class ProductBasket {
     private int getTotalCost(boolean withPrint) {
         int total = 0;
         int specialTotal = 0;
-        for (Product product : basket) {
-            if (product != null) {
-                total += product.getPrice();
-                if (product.isSpecial()) {
-                    specialTotal++;
-                }
-                if (withPrint) {
-                    System.out.println(product);
+        for (Map.Entry entry : basket.entrySet()) {
+            for (Product product : (ArrayList<Product>) entry.getValue()) {
+                if (product != null) {
+                    total += product.getPrice();
+                    if (product.isSpecial()) {
+                        specialTotal++;
+                    }
+                    if (withPrint) {
+                        System.out.println(product);
+                    }
                 }
             }
         }
@@ -43,23 +47,14 @@ public class ProductBasket {
     }
 
     public boolean isContainProduct(String productName) {
-        for (Product product : basket) {
-            if (product != null && product.getName().equalsIgnoreCase(productName)) {
-                return true;
-            }
-        }
-        return false;
+        return basket.containsKey(productName);
     }
 
     public List<Product> deleteProduct(String productName) {
         List<Product> deletedProductList = new ArrayList<>();
-        Iterator<Product> iterator = basket.iterator();
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getName().equalsIgnoreCase(productName)) {
-                deletedProductList.add(product);
-                basket.remove(product);
-            }
+        if (basket.containsKey(productName)) {
+            deletedProductList = basket.get(productName);
+            basket.remove(productName);
         }
         return deletedProductList;
     }
