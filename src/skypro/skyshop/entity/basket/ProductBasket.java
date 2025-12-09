@@ -7,6 +7,10 @@ import java.util.*;
 public class ProductBasket {
     private Map<String, List<Product>> basket = new HashMap<>();
 
+    private int totalCost = 0;
+    int specialTotal = 0;
+
+
     public void addProduct(Product product) {
         if (basket.containsKey(product.getName())) {
             basket.get(product.getName()).add(product);
@@ -24,26 +28,23 @@ public class ProductBasket {
     }
 
     private int getTotalCost(boolean withPrint) {
-        int total = 0;
-        int specialTotal = 0;
-        for (Map.Entry entry : basket.entrySet()) {
-            for (Product product : (ArrayList<Product>) entry.getValue()) {
-                if (product != null) {
-                    total += product.getPrice();
+        totalCost = 0;
+        specialTotal = 0;
+        basket.values().stream()
+                .flatMap(Collection::stream)
+                .filter(Objects::nonNull)
+                .forEach(product -> {
                     if (product.isSpecial()) {
                         specialTotal++;
                     }
-                    if (withPrint) {
-                        System.out.println(product);
-                    }
-                }
-            }
-        }
+                    totalCost += product.getPrice();
+                    System.out.println(product);
+                });
         if (withPrint) {
-            System.out.println(total == 0 ? "В корзине пусто!" : "Итого: %d".formatted(total));
+            System.out.println(totalCost == 0 ? "В корзине пусто!" : "Итого: %d".formatted(totalCost));
             System.out.printf("Специальных товаров: %d%n", specialTotal);
         }
-        return total;
+        return totalCost;
     }
 
     public boolean isContainProduct(String productName) {

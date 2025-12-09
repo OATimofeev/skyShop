@@ -192,6 +192,8 @@ public class App {
         System.out.println("Поиск обычного товара: " + searchEngine.search("Арбуз"));
         System.out.println("Поиск несуществующего товара: " + searchEngine.search("Пусто"));
         System.out.println("Поиск разных товаров и статьи: " + searchEngine.search("ло"));
+        System.out.println("Поиск пустой строки: " + searchEngine.search(""));
+        System.out.println("Поиск пробелов: " + searchEngine.search("    "));
         System.out.println(delimiter);
     }
 }
