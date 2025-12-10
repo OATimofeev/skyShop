@@ -4,6 +4,8 @@ import skypro.skyshop.exception.BestResultNotFoundException;
 import skypro.skyshop.util.compre.SearchableComparator;
 
 import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
 
@@ -14,17 +16,16 @@ public class SearchEngine {
     }
 
     public Set<Searchable> search(String searchString) {
-        Set<Searchable> founded = new TreeSet<>(new SearchableComparator());
+        return Optional.ofNullable(searchString)
+                .filter(str-> !str.isBlank())
+                .map(str ->
+                        searchables
+                                .stream()
+                                .filter(x -> x != null && x.searchTerm().contains(searchString))
+                                .collect(Collectors.toCollection(() -> new TreeSet<>(new SearchableComparator())))
+                )
+                .orElseGet(() -> new TreeSet<>(new SearchableComparator()));
 
-        if (searchString == null || searchString.isEmpty()) {
-            return founded;
-        }
-        for (Searchable searchable : searchables) {
-            if (searchable != null && searchable.searchTerm().contains(searchString)) {
-                founded.add(searchable);
-            }
-        }
-        return founded;
     }
 
     public Searchable searchBest(String searchString) throws BestResultNotFoundException {
