@@ -1,5 +1,6 @@
 package org.skypro.skyshop.service;
 
+import lombok.Getter;
 import org.skypro.skyshop.model.article.Article;
 import org.skypro.skyshop.model.product.DiscountedProduct;
 import org.skypro.skyshop.model.product.FixPriceProduct;
@@ -8,14 +9,12 @@ import org.skypro.skyshop.model.product.SimpleProduct;
 import org.skypro.skyshop.model.search.Searchable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@Getter
 public class StorageService {
 
     private final Map<UUID, Product> productMap;
@@ -27,18 +26,14 @@ public class StorageService {
         generateData();
     }
 
-    public Map<UUID, Product> getProductMap() {
-        return productMap;
-    }
-
-    public Map<UUID, Article> getArticleMap() {
-        return articleMap;
-    }
-
     public List<Searchable> getAll() {
         return Stream
                 .concat(productMap.values().stream(), articleMap.values().stream())
                 .collect(Collectors.toList());
+    }
+
+    public Optional<Product> getProductById(UUID id) {
+        return Optional.ofNullable(productMap.get(id));
     }
 
     private void generateData() {
